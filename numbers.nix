@@ -1,10 +1,28 @@
-{ stdenv }:
+# with import <nixpkgs> {};
 
-stdenv.mkDerivation {
-  name = "numbers-0.1";
-  builder = ./builder.sh;
-  src = fetchurl {
-    url =  https://github.com/BykovskiyPS/prime.git;
-    sha256 = ""07q5bl5ld3yx19n08qsibbagkbqibsk6znqa4b5lb3fcwgc88f05;
-  };
-} 
+let
+
+  nixpkgs = import <nixpkgs> {};
+
+  inherit (nixpkgs) stdenv fetchurl which;
+
+  libprime = import ./default.nix;
+
+  numbers = stdenv.mkDerivation {
+    name = "numbers-0.1";
+ 
+    src  =  ./.;
+    buildInputs = [ libprime ];
+    inherit libprime;
+
+    buildPhase = ''
+      gcc -o numbers main.c $libprime/lib/libprime.so
+    '';
+
+    installPhase = ''
+      mkdir -p $out/bin
+      cp numbers $out/bin
+    '';
+};
+
+in numbers
