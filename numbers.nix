@@ -1,23 +1,19 @@
-# with import <nixpkgs> {};
-
+with import <nixpkgs> {};
+#{ stdenv, pkgs }:
 let
-
-  nixpkgs = import <nixpkgs> {};
-
-  lib_prime_commit = "eb4aed1377704bf69771042ef89d0b07271a7a26";
-  libpirme = pkgs.callPackage(buiktins.fetchTarball{
-    url = "https://github.com/BykovskiyPS/prime_lib/archive/prime_lib.tar.gz";
-    sha256 = "19153jq0ix097g9w7iw5x4q6mv7kcqa4naqp6jnbpv9d9dcv3b30";
-  }) {};
+  libprime = builtins.fetchTarball {
+    url = "https://github.com/BykovskiyPS/libprime/archive/libprime.tar.gz";
+    sha256 = "1hyqa01x3i6r0s74zb69ja57m4psv1fkac2ds4mgzq2b1s8s4wh6";
+  };
 in 
 stdenv.mkDerivation {
-    name = "numbers-0.1";
+    name = "numbers";
  
-    src  =  ./.;
+    src = builtins.path { path = ./.;};
     buildInputs = [ libprime ];
-    
     buildPhase = ''
-      gcc -o numbers main.c $libprime/lib/libprime.so
+      gcc -c -o main.o sources/main.c
+      gcc -o numbers main.o  ${libprime}/lib/libprime.so
     '';
 
     installPhase = ''

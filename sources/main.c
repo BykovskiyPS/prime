@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <prime.h>
+#include "prime.h"
 
 // extern void PrimeNumbers(int count);
 
