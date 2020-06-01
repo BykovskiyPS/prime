@@ -1,1 +1,0 @@
-void PrimeNumbers(int count);
