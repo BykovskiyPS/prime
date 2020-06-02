@@ -1,15 +1,18 @@
-with import <nixpkgs> {};
-#{ stdenv, pkgs }:
+# with import <nixpkgs> {};
+{ stdenv, pkgs }:
+
+#with (import <nixpkgs> {});
 let
-  libprime = builtins.fetchTarball {
-    url = "https://github.com/BykovskiyPS/libprime/archive/libprime.tar.gz";
-    sha256 = "1hyqa01x3i6r0s74zb69ja57m4psv1fkac2ds4mgzq2b1s8s4wh6";
-  };
+  libprime = pkgs.callPackage (builtins.fetchTarball {
+    url = "https://github.com/BykovskiyPS/libprime/archive/master.tar.gz";
+    sha256 = "03wsf2rh8lgrxdbdnjcwm6yng50jmr4cp6yqkh22p87yjmai4ca2";
+  }) {};
 in 
 stdenv.mkDerivation {
     name = "numbers";
  
     src = builtins.path { path = ./.;};
+   # src = ./.;
     buildInputs = [ libprime ];
     buildPhase = ''
       gcc -c -o main.o sources/main.c
