@@ -1,7 +1,5 @@
-# with import <nixpkgs> {};
 { stdenv, pkgs }:
 
-#with (import <nixpkgs> {});
 let
   libprime = pkgs.callPackage (builtins.fetchTarball {
     url = "https://github.com/BykovskiyPS/libprime/archive/master.tar.gz";
@@ -12,7 +10,6 @@ stdenv.mkDerivation {
     name = "numbers";
  
     src = builtins.path { path = ./.;};
-   # src = ./.;
     buildInputs = [ libprime ];
     buildPhase = ''
       gcc -c -o main.o sources/main.c
